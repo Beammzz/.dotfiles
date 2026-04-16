@@ -39,6 +39,13 @@ else
     ok "Hardware configuration already exists, skipping."
 fi
 
+info "Review your hardware-configuration.nix before continuing."
+echo -e "${CYAN}  If you use Btrfs, add mount options now (see README.md for details).${NC}"
+echo -e "${YELLOW}? Press Enter to open hardware-configuration.nix in your editor...${NC}"
+read -r
+${EDITOR:-nano} "$HARDWARE_CONFIG"
+ok "Hardware configuration reviewed."
+
 # ── 2. Age Key Setup ──────────────────────────────────────────────────
 if [[ -f "$SOPS_KEY_FILE" ]]; then
     ok "Age key already exists at $SOPS_KEY_FILE"
