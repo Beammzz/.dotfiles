@@ -97,15 +97,17 @@ sudo netbird up
 
 ### Edit secrets
 
+The age key lives at `~/.config/sops/age/keys.txt` (the default `sops` lookup path), so no extra flags are needed:
+
 ```bash
 # Open encrypted secrets in your editor (re-encrypts on save)
-sudo SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt sops Nixos/secrets.yaml
+sops Nixos/secrets.yaml
 
 # Use a specific editor
-sudo EDITOR=nano SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt sops Nixos/secrets.yaml
+EDITOR=nano sops Nixos/secrets.yaml
 
 # Decrypt and print to terminal
-sudo SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt sops -d Nixos/secrets.yaml
+sops -d Nixos/secrets.yaml
 ```
 
 ---
@@ -173,14 +175,25 @@ Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) using a
 | `wireguard_region` | Gluetun (VPN server region) |
 | `suwayomi_user` | Suwayomi (basic auth username) |
 | `suwayomi_password` | Suwayomi (basic auth password) |
-| `nextcloud_adminUser` | Nextcloud (admin username) |
-| `nextcloud_adminPassword` | Nextcloud (admin password) |
 | `nextcloud_redisPassword` | Nextcloud (Redis cache password) |
+| `homepage_jellyfin_key` | Homepage (Jellyfin widget) |
+| `homepage_jellyseerr_key` | Homepage (Jellyseerr widget) |
+| `homepage_suwayomi_username` | Homepage (Suwayomi widget) |
+| `homepage_suwayomi_password` | Homepage (Suwayomi widget) |
+| `homepage_qbittorrent_username` | Homepage (qBittorrent widget) |
+| `homepage_qbittorrent_password` | Homepage (qBittorrent widget) |
+| `homepage_prowlarr_key` | Homepage (Prowlarr widget) |
+| `homepage_sonarr_key` | Homepage (Sonarr widget) |
+| `homepage_radarr_key` | Homepage (Radarr widget) |
+| `homepage_pihole_key` | Homepage (Pi-hole widget) |
+| `homepage_gitea_key` | Homepage (Gitea widget) |
+| `homepage_beszel_username` | Homepage (Beszel widget) |
+| `homepage_beszel_password` | Homepage (Beszel widget) |
 
 **Rotate the age key:**
 
 ```bash
-age-keygen -o /var/lib/sops-nix/key.txt
+age-keygen -o ~/.config/sops/age/keys.txt
 # Update .sops.yaml with the new public key
 sops updatekeys Nixos/secrets.yaml
 ```
