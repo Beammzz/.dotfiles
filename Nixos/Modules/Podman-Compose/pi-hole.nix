@@ -44,6 +44,6 @@
   };
 
   systemd.tmpfiles.rules = [
-      "d ${ContainerPath}/pi-hole/etc-pihole 0755 ${toString PUID} ${toString PGID}"
+      "d ${ContainerPath}/pi-hole/ 0755 ${toString PUID} ${toString PGID}"
   ];
 }
