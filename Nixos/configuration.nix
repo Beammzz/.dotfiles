@@ -58,7 +58,7 @@
   users.users.harumi = {
     isNormalUser = true;
     description = "Harumi";
-    extraGroups = ["networkmanager" "wheel" "docker" "video" "render"];
+    extraGroups = ["networkmanager" "wheel" "video" "render"];
   };
 
   # Allow unfree packages

@@ -26,7 +26,7 @@
     environmentFiles = [ traefikEnvFile ];
 
     volumes = [
-      "/var/run/docker.sock:/var/run/docker.sock:ro"
+      "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
       "${ContainerPath}/traefik/acme.json:/acme.json"
     ];
 
@@ -73,7 +73,7 @@
 
       # Docker provider
       "--providers.docker=true"
-      "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      "--providers.docker.endpoint=unix:///var/run/podman/podman.sock"
       "--providers.docker.exposedbydefault=false"
       "--providers.docker.network=proxy"
 
@@ -86,9 +86,9 @@
     ];
   };
 
-  systemd.services.docker-traefik = {
-    after = [ "docker.service" "docker-create-proxy-network.service" ];
-    requires = [ "docker.service" "docker-create-proxy-network.service" ];
+  systemd.services.podman-traefik = {
+    after = [ "podman.service" "podman-create-proxy-network.service" ];
+    requires = [ "podman.service" "podman-create-proxy-network.service" ];
   };
 
   systemd.tmpfiles.rules = [

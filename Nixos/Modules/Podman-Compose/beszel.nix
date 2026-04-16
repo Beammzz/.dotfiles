@@ -12,7 +12,7 @@
     ];
 
     volumes = [
-      "/var/run/docker.sock:/var/run/docker.sock:ro"
+      "/var/run/podman/podman.sock:/var/run/docker.sock:ro"
       "${ContainerPath}/beszel_agent_data:/var/lib/beszel-agent"
     ];
 
@@ -21,6 +21,11 @@
     };
 
     environmentFiles = [ beszelEnvFile ];
+  };
+
+  systemd.services.podman-beszel = {
+    after = [ "podman.service" ];
+    requires = [ "podman.service" ];
   };
 
   systemd.tmpfiles.rules = [

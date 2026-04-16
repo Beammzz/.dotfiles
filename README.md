@@ -1,6 +1,6 @@
 # Harumi Homelab Dotfiles
 
-NixOS flake configuration for a headless homelab server running Docker-based media and infrastructure services.
+NixOS flake configuration for a headless homelab server running Podman-based media and infrastructure services.
 
 ## Services
 
@@ -76,44 +76,33 @@ git clone https://github.com/Beammzz/.dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ```
 
-### 3. Copy your hardware configuration
-
-If you are reinstalling on a new machine, delete any committed `Nixos/Modules/hardware-configuration.nix` first so a fresh one can be generated!
-
-```bash
-rm -f Nixos/Modules/hardware-configuration.nix
-sudo nixos-generate-config --show-hardware-config > Nixos/Modules/hardware-configuration.nix
-```
-
-Edit the Nixos Hardware-Configuration.nix file before continue.
-
-### 4. Run the install script
+### 3. Run the install script
 
 ```bash
 chmod +x ./Scripts/*
 ./Scripts/install.sh
 ```
 
-This ensures the required tools used by `install.sh` are available in your shell (`git`, `sops`, and `age-keygen`). Home Manager is installed by the script if missing.
-
 The install script will:
 
-- Generate an **age key** for sops-nix (at `/var/lib/sops-nix/key.txt`)
+- Generate `hardware-configuration.nix` for your machine
+- Generate an **age key** for sops-nix (at `~/.config/sops/age/keys.txt`)
 - Update `.sops.yaml` with your public key
 - Create `Nixos/secrets.yaml` from the example template
 - Open your editor so you can fill in secret values
 - Encrypt the secrets file with sops
+- Create `vars.nix` from the example template (hostname, domain, git user, etc.)
 - Update the flake lock
 - Build and switch to the NixOS configuration
 - Build and switch the Home Manager configuration
 
-### 5. Set your Samba password
+### 4. Set your Samba password
 
 ```bash
 sudo smbpasswd -a $USER
 ```
 
-### 6. Connect Netbird
+### 5. Connect Netbird
 
 ```bash
 sudo netbird up
@@ -153,44 +142,47 @@ To decrypt and view the file contents directly in your terminal without opening 
 
 ```bash
 sudo SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt sops -d Nixos/secrets.yaml
+```
+
 ## Project Structure
 
 ```
-
 ~/.dotfiles/
-├── flake.nix # Flake entry point
-├── .sops.yaml # Sops encryption rules
+├── flake.nix                        # Flake entry point
+├── .sops.yaml                       # Sops encryption rules
+├── vars.nix.example                 # Template for user variables
 ├── README.md
 ├── Scripts/
-│ ├── install.sh # First-time setup
-│ ├── update.sh # Flake update + rebuild
-│ └── clean.sh # Garbage collection
+│   ├── install.sh                   # First-time setup
+│   ├── update.sh                    # Flake update + rebuild
+│   └── clean.sh                     # Garbage collection
 ├── Nixos/
-│ ├── configuration.nix # Main NixOS config
-│ ├── secrets.nix # Sops-nix secret declarations
-│ ├── secrets.yaml # Encrypted secrets (sops)
-│ ├── secrets.yaml.example # Template for secrets
-│ └── Modules/
-│ ├── modules.nix # Module imports
-│ ├── hardware-configuration.nix # Machine-specific (gitignored)
-│ ├── samba.nix # Samba file sharing
-│ ├── docker.nix # Docker + container orchestration
-│ └── Docker-Compose/
-│ ├── traefik.nix
-│ ├── homepage.nix
-│ ├── pi-hole.nix
-│ ├── jellyfin.nix
-│ ├── arr-stacks.nix # Gluetun + qBit + Sonarr/Radarr/Prowlarr + Suwayomi + FlareSolverr
-│ ├── seerr.nix
-│ ├── tdarr.nix
-│ └── beszel.nix
+│   ├── configuration.nix            # Main NixOS config
+│   ├── secrets.nix                  # Sops-nix secret declarations
+│   ├── secrets.yaml                 # Encrypted secrets (sops)
+│   ├── secrets.yaml.example         # Template for secrets
+│   └── Modules/
+│       ├── modules.nix              # Module imports
+│       ├── hardware-configuration.nix  # Machine-specific (generated)
+│       ├── samba.nix                # Samba file sharing
+│       ├── podman.nix               # Podman + container orchestration
+│       └── Podman-Compose/
+│           ├── traefik.nix
+│           ├── homepage.nix
+│           ├── pi-hole.nix
+│           ├── jellyfin.nix
+│           ├── arr-stacks.nix       # Gluetun + qBit + Sonarr/Radarr/Prowlarr + Suwayomi + FlareSolverr
+│           ├── seerr.nix
+│           ├── tdarr.nix
+│           ├── gitea.nix
+│           ├── nextcloud.nix
+│           └── beszel.nix
 └── Home/
-├── home.nix # Home Manager entry point
-└── Modules/
-├── modules.nix
-└── nvf.nix # Neovim config (nvf)
-
-````
+    ├── home.nix                     # Home Manager entry point
+    └── Modules/
+        ├── modules.nix
+        └── nvf.nix                  # Neovim config (nvf)
+```
 
 ## Secrets
 
@@ -218,4 +210,4 @@ To rotate the age key:
 age-keygen -o /var/lib/sops-nix/key.txt
 # Update .sops.yaml with the new public key
 sops updatekeys Nixos/secrets.yaml
-````
+```

@@ -2,7 +2,11 @@
   config,
   pkgs,
   ...
-}: {
+}:
+let
+  vars = import ../vars.nix;
+  inherit (vars) GitUser GitEmail;
+in {
   imports = [
     ./Modules/modules.nix
   ];
@@ -14,6 +18,8 @@
   home.packages = with pkgs; [
     fastfetch
     btop
+    podman-compose
+    podman-tui
   ];
 
   home.file = {
@@ -31,8 +37,8 @@
     git = {
       enable = true;
       settings = {
-        user.name = "Harumi";
-        user.email = "Sorrathon@proton.me";
+        user.name = GitUser;
+        user.email = GitEmail;
       };
     };
   };

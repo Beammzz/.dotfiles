@@ -7,4 +7,6 @@
   Domain = "local.takumihomelab.works";
   ContainerPath = "/containers";
   MediaPath = "/mnt/media";
+  GitUser = "Harumi";
+  GitEmail = "Sorrathon@proton.me";
 }

@@ -10,6 +10,7 @@
       ];
     
     environment = {
+      TZ = Timezone;
       PUID = PUID;
       PGID = PGID;
     };

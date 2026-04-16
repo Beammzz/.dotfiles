@@ -33,7 +33,11 @@ echo -e "${NC}"
 # Show uncommitted changes if any
 if ! git -C "$DOTFILES_DIR" diff --quiet 2>/dev/null; then
     echo -e "${BLUE}▶ Uncommitted changes:${NC}"
-    git -C "$DOTFILES_DIR" diff | nvim -c 'set filetype=diff' -
+    if command -v nvim >/dev/null 2>&1; then
+        git -C "$DOTFILES_DIR" diff | nvim -c 'set filetype=diff' -
+    else
+        git -C "$DOTFILES_DIR" diff | less
+    fi
     echo ""
     commit_if_changes "chore: pre-update sync"
 fi
@@ -48,14 +52,27 @@ if [[ "$answer" == "y" ]]; then
     commit_if_changes "chore: flake update before build"
 
     echo -e "${BLUE}▶ Building NixOS configuration...${NC}"
-    sudo nixos-rebuild switch --flake "$DOTFILES_DIR" --impure
+    sudo nixos-rebuild switch --flake "$DOTFILES_DIR#Harumi-Nixos" --impure
     echo -e "${GREEN}✓ NixOS build complete.${NC}"
 
     echo -e "${BLUE}▶ Building Home Manager configuration...${NC}"
-    home-manager switch --flake "$DOTFILES_DIR" --impure
+    home-manager switch --flake "$DOTFILES_DIR#harumi" --impure
     echo -e "${GREEN}✓ Home Manager build complete.${NC}"
 
     commit_if_changes "chore: post-build sync"
+
+    echo ""
+    echo -e "${YELLOW}${BOLD}? Update Podman containers to latest images? (y/n)${NC}"
+    read -r podman_answer
+    if [[ "$podman_answer" == "y" ]]; then
+        echo -e "${BLUE}▶ Pulling latest Podman images and restarting services...${NC}"
+        sudo podman ps --format "{{.Image}}" | sort -u | xargs -r -I {} sudo podman pull {}
+        echo -e "${BLUE}▶ Restarting Podman infrastructure...${NC}"
+        sudo systemctl restart podman.service podman-create-proxy-network.service
+        echo -e "${GREEN}✓ Podman containers updated and restarted via systemd dependency tree.${NC}"
+    else
+        echo -e "${YELLOW}⊘ Skipped Podman update.${NC}"
+    fi
 
     echo ""
     echo -e "${YELLOW}${BOLD}? Push changes to remote? (y/n)${NC}"

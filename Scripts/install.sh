@@ -109,8 +109,8 @@ else
 fi
 
 # ── 4.5. Create vars.nix ──────────────────────────────────────────────
-VARS_EXAMPLE="$DOTFILES_DIR/Nixos/Modules/vars.nix.example"
-VARS_FILE="$DOTFILES_DIR/Nixos/Modules/vars.nix"
+VARS_EXAMPLE="$DOTFILES_DIR/vars.nix.example"
+VARS_FILE="$DOTFILES_DIR/vars.nix"
 
 if [[ -f "$VARS_FILE" ]]; then
     ok "vars.nix already exists."
@@ -130,16 +130,16 @@ else
     ok "vars.nix configured."
 fi
 
-# ── 5. Edit docker.nix ────────────────────────────────────────────────
-info "Please review and edit docker.nix before continuing."
-echo -e "${YELLOW}? Press Enter to open docker.nix in your editor...${NC}"
+# ── 5. Edit podman.nix ────────────────────────────────────────────────
+info "Please review and edit podman.nix before continuing."
+echo -e "${YELLOW}? Press Enter to open podman.nix in your editor...${NC}"
 read -r
-${EDITOR:-nano} "$DOTFILES_DIR/Nixos/Modules/docker.nix"
-ok "docker.nix reviewed."
+${EDITOR:-nano} "$DOTFILES_DIR/Nixos/Modules/podman.nix"
+ok "podman.nix reviewed."
 
 # ── 6. Update flake lock ──────────────────────────────────────────────
 info "Updating flake lock file..."
-nix --extra-experimental-features "nix-command flakes" flake update --flake "$DOTFILES_DIR"
+nix flake update --flake "$DOTFILES_DIR"
 ok "Flake lock updated."
 
 # ── 7. Ensure Home Manager is available ───────────────────────────────
