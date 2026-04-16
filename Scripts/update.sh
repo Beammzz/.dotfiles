@@ -17,6 +17,8 @@ commit_if_changes() {
     local message="$1"
     if ! git -C "$DOTFILES_DIR" diff --quiet || ! git -C "$DOTFILES_DIR" diff --cached --quiet; then
         git -C "$DOTFILES_DIR" add -A
+        # Prevent these files from being committed
+        git -C "$DOTFILES_DIR" rm --cached vars.nix Nixos/Modules/hardware-configuration.nix Nixos/secrets.yaml >/dev/null 2>&1 || true
         git -C "$DOTFILES_DIR" commit -m "$message"
         echo -e "${GREEN}✓ Committed:${NC} $message"
     else
@@ -34,7 +36,10 @@ echo -e "${NC}"
 if ! git -C "$DOTFILES_DIR" diff --quiet 2>/dev/null; then
     echo -e "${BLUE}▶ Uncommitted changes:${NC}"
     if command -v nvim >/dev/null 2>&1; then
-        git -C "$DOTFILES_DIR" diff | nvim -c 'set filetype=diff' -
+        tmp_diff=$(mktemp)
+        git -C "$DOTFILES_DIR" diff > "$tmp_diff"
+        nvim -R -c 'set filetype=diff' "$tmp_diff"
+        rm -f "$tmp_diff"
     else
         git -C "$DOTFILES_DIR" diff | less
     fi
