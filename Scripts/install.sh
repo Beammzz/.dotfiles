@@ -84,14 +84,12 @@ fi
 echo -e "${CYAN}  Age public key: ${BOLD}$AGE_PUBLIC_KEY${NC}"
 
 # ── 3. Update .sops.yaml with the real public key ─────────────────────
-if grep -q 'age1xxxx' "$SOPS_CONFIG" 2>/dev/null; then
-    info "Updating .sops.yaml with your age public key..."
-    sed -i "s|age1[x]*|$AGE_PUBLIC_KEY|g" "$SOPS_CONFIG"
-    ok ".sops.yaml updated."
-elif grep -q "$AGE_PUBLIC_KEY" "$SOPS_CONFIG" 2>/dev/null; then
+if grep -q "$AGE_PUBLIC_KEY" "$SOPS_CONFIG" 2>/dev/null; then
     ok ".sops.yaml already has the correct public key."
 else
-    warn ".sops.yaml has a different key. Update it manually if needed."
+    info "Updating .sops.yaml with your age public key..."
+    sed -i "s|age1[a-z0-9x]\{1,\}|$AGE_PUBLIC_KEY|g" "$SOPS_CONFIG"
+    ok ".sops.yaml updated."
 fi
 
 # ── 4. Create and encrypt secrets.yaml ────────────────────────────────
@@ -170,7 +168,8 @@ echo -e "${YELLOW}${BOLD}? Build and switch to the NixOS configuration now? (y/n
 read -r answer
 if [[ "$answer" == "y" ]]; then
     info "Building NixOS configuration..."
-    git add .
+    git -C "$DOTFILES_DIR" add .
+    git -C "$DOTFILES_DIR" add -f vars.nix Nixos/Modules/hardware-configuration.nix Nixos/secrets.yaml
     sudo nixos-rebuild switch --flake "$DOTFILES_DIR#Harumi-Nixos" --impure
     ok "NixOS configuration applied."
 

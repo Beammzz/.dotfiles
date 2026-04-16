@@ -52,6 +52,7 @@ if [[ "$answer" == "y" ]]; then
     commit_if_changes "chore: flake update before build"
 
     echo -e "${BLUE}▶ Building NixOS configuration...${NC}"
+    git -C "$DOTFILES_DIR" add -f vars.nix Nixos/Modules/hardware-configuration.nix Nixos/secrets.yaml
     sudo nixos-rebuild switch --flake "$DOTFILES_DIR#Harumi-Nixos" --impure
     echo -e "${GREEN}✓ NixOS build complete.${NC}"
 
