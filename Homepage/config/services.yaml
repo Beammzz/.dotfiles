@@ -1,0 +1,181 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/
+
+- Widgets:
+    - Calendar:
+        icon: sh-notion-calendar.svg
+        href: https://calendar.notion.so/
+        description: Calendar for Notion & Arr-Stacks
+        widget:
+          type: calendar
+          firstDayInWeek: sunday # optional - defaults to monday
+          view: monthly # optional - possible values monthly, agenda
+          maxEvents: 15 # optional - defaults to 10
+          showTime: true # optional - show time for event happening today - defaults to false
+          timezone: Asia/Bangkok
+          integrations: # optional
+            - type: sonarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr, lidarr, readarr, ical
+              service_group: Arr-Stacks # group name where widget exists
+              service_name: Sonarr # service name for that widget
+              color: teal # optional - defaults to pre-defined color for the service (teal for sonarr)
+              baseUrl: https://sonarr.local.takumihomelab.works # optional - adds links to sonarr/radarr pages
+              params: # optional - additional params for the service
+                unmonitored: true # optional - defaults to false, used with *arr stack
+            - type: radarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr, lidarr, readarr, ical
+              service_group: Arr-Stacks # group name where widget exists
+              service_name: Radarr # service name for that widget
+              color: yellow # optional - defaults to pre-defined color for the service (teal for sonarr)
+              baseUrl: https://radarr.local.takumihomelab.works # optional - adds links to sonarr/radarr pages
+              params: # optional - additional params for the service
+                unmonitored: true
+            #- type: ical # Show calendar events from another service
+            #  url: https://domain.url/with/link/to.ics # URL with calendar events
+            #  name: My Events # required - name for these calendar events
+            #  color: zinc # optional - defaults to pre-defined color for the service (zinc for ical)
+            #  params: # optional - additional params for the service
+            #    showName: true # optional - show name before event title in event line - defaults to false
+    - Nextcloud:
+        icon: sh-nextcloud.svg
+        href: https://nextcloud.takumihomelab.works
+        description: My Cloud Storage
+        widget:
+          type: nextcloud
+          url: http://nextcloud:8080
+          username: { { HOMEPAGE_VAR_NEXTCLOUD_USERNAME } }
+          password: { { HOMEPAGE_VAR_NEXTCLOUD_PASSWORD } }
+
+- Media:
+    - Jellyfin:
+        icon: sh-jellyfin.svg
+        href: https://jellyfin.takumihomelab.works
+        description: My Media Server
+        widget:
+          type: jellyfin
+          url: http://jellyfin:8096
+          key: { { HOMEPAGE_VAR_JELLYFIN_KEY } }
+          enableBlocks: true # optional, defaults to false
+          enableNowPlaying: true # optional, defaults to true
+          enableUser: true # optional, defaults to false
+          enableMediaControl: false # optional, defaults to true
+          showEpisodeNumber: true # optional, defaults to false
+          expandOneStreamToTwoRows: false
+
+    - Jellyseerr:
+        icon: sh-jellyseerr.svg
+        href: https://seerr.local.takumihomelab.works
+        description: Request Media For Jellyfin
+        widget:
+          type: jellyseerr
+          url: http://seerr:5055
+          key: { { HOMEPAGE_VAR_JELLYSEERR_KEY } }
+
+    - Suwayomi:
+        icon: sh-suwayomi.svg
+        href: https://suwayomi.takumihomelab.works
+        description: My Manga Server
+        widget:
+          type: suwayomi
+          url: http://gluetun:4567
+          username: { { HOMEPAGE_VAR_SUWAYOMI_USERNAME } }
+          password: { { HOMEPAGE_VAR_SUWAYOMI_PASSWORD } }
+          category: 0
+
+    - Tdarr:
+        icon: sh-tdarr.png
+        href: https://tdarr.local.takumihomelab.works/
+        description: Media Transcoder
+        widget:
+          type: tdarr
+          url: http://tdarr:8265
+
+- Arr-Stacks:
+    - Qbittorrent:
+        icon: sh-qbittorrent.svg
+        href: https://qbittorrent.local.takumihomelab.works
+        description: My Torrent Client
+        widget:
+          type: qbittorrent
+          url: http://gluetun:8080
+          username: { { HOMEPAGE_VAR_QBITTORRENT_USERNAME } }
+          password: { { HOMEPAGE_VAR_QBITTORRENT_PASSWORD } }
+          enableLeechProgress: true
+          enableLeechSize: true
+
+    - Prowlarr:
+        icon: sh-prowlarr.svg
+        href: https://prowlarr.local.takumihomelab.works
+        description: Indexer Manager
+        widget:
+          type: prowlarr
+          url: http://gluetun:9696
+          key: { { HOMEPAGE_VAR_PROWLARR_KEY } }
+
+    - Sonarr:
+        icon: sh-sonarr.svg
+        href: https://sonarr.local.takumihomelab.works
+        description: TV Show Manager
+        widget:
+          type: sonarr
+          url: http://gluetun:8989
+          key: { { HOMEPAGE_VAR_SONARR_KEY } }
+          enableQueue: true
+
+    - Radarr:
+        icon: sh-radarr.svg
+        href: https://radarr.local.takumihomelab.works
+        description: Movie Manager
+        widget:
+          type: radarr
+          url: http://gluetun:7878
+          key: { { HOMEPAGE_VAR_RADARR_KEY } }
+          enableQueue: true
+
+- Other:
+    - Traefik:
+        icon: sh-traefik.svg
+        href: http://traefik.local.takumihomelab.works/dashboard/
+        description: Reverse Proxy Dashboard
+        widget:
+          type: traefik
+          url: http://traefik:8080
+
+    - Pi-Hole:
+        icon: sh-pi-hole.svg
+        href: http://pi-hole.local.takumihomelab.works/admin/
+        description: Network Ad Blocker
+        widget:
+          type: pihole
+          url: http://pi-hole/
+          version: 6
+          key: { { HOMEPAGE_VAR_PIHOLE_KEY } }
+
+    - Gitea:
+        icon: sh-gitea.svg
+        href: https://gitea.local.takumihomelab.works/
+        description: My Git Repositories
+        widget:
+          type: gitea
+          url: http://gitea:3000
+          key: { { HOMEPAGE_VAR_GITEA_KEY } }
+
+    - Beszel:
+        icon: sh-beszel.svg
+        href: https://beszel.takumihomelab.works
+        description: Docker Monitoring
+        widget:
+          type: beszel
+          url: https://beszel.takumihomelab.works
+          username: { { HOMEPAGE_VAR_BESZEL_USERNAME } }
+          password: { { HOMEPAGE_VAR_BESZEL_PASSWORD } }
+          version: 2
+
+    - N8N:
+        icon: sh-n8n.svg
+        href: https://n8n.takumihomelab.works
+        description: Workflow Automation
+
+    - Vaultwarden:
+        icon: sh-vaultwarden.svg
+        href: https://vault.takumihomelab.works
+        description: Password Manager

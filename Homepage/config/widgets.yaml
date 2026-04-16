@@ -1,0 +1,21 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/info-widgets/
+
+- datetime:
+    text_size: xl
+    format:
+      hour: "numeric"
+      minute: "numeric"
+    timezone: "Asia/Bangkok"
+
+- resources:
+    label: System
+    cpu: true
+    memory: true
+
+- resources:
+    label: Storage
+    disk:
+      - /
+      - /mnt/media

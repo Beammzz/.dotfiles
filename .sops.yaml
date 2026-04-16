@@ -1,0 +1,11 @@
+keys:
+  # Replace with your actual age public key
+  # Generate one with: age-keygen -o /var/lib/sops-nix/key.txt
+  # Then paste the public key (starts with age12xfynk8hrd2wlyyph3kdc7k2pfmvac9luh9p9z88ftr4k859munqy5f5gw...) below
+  - &harumi age12xfynk8hrd2wlyyph3kdc7k2pfmvac9luh9p9z88ftr4k859munqy5f5gw
+
+creation_rules:
+  - path_regex: Nixos/secrets\.yaml$
+    key_groups:
+      - age:
+          - *harumi

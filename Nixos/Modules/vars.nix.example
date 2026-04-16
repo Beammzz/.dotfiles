@@ -1,0 +1,10 @@
+{
+  Hostname = "Harumi-Nixos";
+  Timezone = "Asia/Bangkok";
+  PUID = "1000";
+  PGID = "1000";
+  Email = "Sorrathon@proton.me";
+  Domain = "local.takumihomelab.works";
+  ContainerPath = "/containers";
+  MediaPath = "/mnt/media";
+}

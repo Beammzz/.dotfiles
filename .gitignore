@@ -1,0 +1,31 @@
+# Nix build artifacts
+result
+result-*
+
+# Age private keys (never commit)
+key.txt
+*.age.key
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Claude Code local settings
+.claude/
+
+# Git diff
+Untitled
+
+# Specific files
+Nixos/Modules/vars.nix
+
+# Homepage Logs
+*.log

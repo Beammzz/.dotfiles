@@ -1,0 +1,34 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings/
+
+
+title: Takumi's Homepage
+description: My Awesome Homepage
+
+background:
+  image: /images/background.png
+  opacity: 25
+cardBlur: xs
+
+# Theme settings
+theme: dark
+color: gray
+headerStyle: boxed
+language: en
+
+fullWidth: true
+disableCollapse: true
+useEqualHeights: true
+hideVersion: true
+statusStyle: "basic"
+
+# Quick Lunch
+quicklaunch:
+  searchDescriptions: true
+  hideInternetSearch: true
+  showSearchSuggestions: true
+  hideVisitURL: true
+  provider: google
+
+
