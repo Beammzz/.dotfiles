@@ -146,7 +146,7 @@ ok "podman.nix reviewed."
 
 # ── 6. Update flake lock ──────────────────────────────────────────────
 info "Updating flake lock file..."
-nix flake update --flake "$DOTFILES_DIR"
+nix --extra-experimental-features "nix-command flakes" flake update --flake "$DOTFILES_DIR"
 ok "Flake lock updated."
 
 # ── 7. Ensure Home Manager is available ───────────────────────────────
