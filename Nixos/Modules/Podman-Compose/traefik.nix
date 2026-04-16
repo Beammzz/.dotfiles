@@ -73,7 +73,7 @@
 
       # Docker provider
       "--providers.docker=true"
-      "--providers.docker.endpoint=unix:///var/run/podman/podman.sock"
+      "--providers.docker.endpoint=unix:///var/run/docker.sock"
       "--providers.docker.exposedbydefault=false"
       "--providers.docker.network=proxy"
 
@@ -87,8 +87,8 @@
   };
 
   systemd.services.podman-traefik = {
-    after = [ "podman.service" "podman-create-proxy-network.service" ];
-    requires = [ "podman.service" "podman-create-proxy-network.service" ];
+    after = [ "podman.service" "podman.socket" "podman-create-proxy-network.service" ];
+    requires = [ "podman.service" "podman.socket" "podman-create-proxy-network.service" ];
   };
 
   systemd.tmpfiles.rules = [
