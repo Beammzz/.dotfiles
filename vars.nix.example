@@ -1,12 +1,12 @@
 {
-  Hostname = "Harumi-Nixos";
+  Hostname = "Current-Hostname";
   Timezone = "Asia/Bangkok";
   PUID = "1000";
   PGID = "1000";
-  Email = "Sorrathon@proton.me";
-  Domain = "local.takumihomelab.works";
+  Email = "YourEmail@example.com";
+  Domain = "local.network.me";
   ContainerPath = "/containers";
   MediaPath = "/mnt/media";
   GitUser = "Harumi";
-  GitEmail = "Sorrathon@proton.me";
+  GitEmail = "YourEmail@example.com";
 }
