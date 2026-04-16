@@ -33,6 +33,7 @@
   };
 
   systemd.tmpfiles.rules = [
+      "d ${ContainerPath}/jellyfin 0755 ${toString PUID} ${toString PGID}"
       "d ${ContainerPath}/jellyfin/config 0755 ${toString PUID} ${toString PGID}"
   ];
 }

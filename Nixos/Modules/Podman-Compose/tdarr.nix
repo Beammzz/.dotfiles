@@ -62,6 +62,7 @@
   };
 
   systemd.tmpfiles.rules = [
+    "d ${ContainerPath}/tdarr 0755 ${toString PUID} ${toString PGID}"
     "d ${ContainerPath}/tdarr/configs 0755 ${toString PUID} ${toString PGID}"
     "d ${ContainerPath}/tdarr/logs 0755 ${toString PUID} ${toString PGID}"
     "d ${ContainerPath}/tdarr/transcode_cache 0755 ${toString PUID} ${toString PGID}"
