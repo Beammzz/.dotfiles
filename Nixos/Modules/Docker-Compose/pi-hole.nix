@@ -38,9 +38,9 @@
     };
   };
 
-  systemd.services.podman-pi-hole = {
-    after = [ "podman-create-proxy-network.service" "podman-traefik.service" ];
-    requires = [ "podman-create-proxy-network.service" ];
+  systemd.services.docker-pi-hole = {
+    after = [ "docker-create-proxy-network.service" "docker-traefik.service" ];
+    requires = [ "docker-create-proxy-network.service" ];
   };
 
   systemd.tmpfiles.rules = [

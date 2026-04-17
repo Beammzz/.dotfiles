@@ -1,6 +1,6 @@
 # Harumi Homelab Dotfiles
 
-NixOS flake configuration for a headless homelab server running Podman-based media and infrastructure services.
+NixOS flake configuration for a headless homelab server running Docker-based media and infrastructure services.
 
 ## Services
 
@@ -70,7 +70,7 @@ The install script walks you through everything step by step:
 3. **Update `.sops.yaml`** with your public key
 4. **Create `secrets.yaml`** from the template and encrypt it with sops
 5. **Create `vars.nix`** from the template (hostname, domain, git user, etc.)
-6. **Open `podman.nix`** for review
+6. **Open `docker.nix`** for review
 7. **Update the flake lock** and install Home Manager if needed
 8. **Build and switch** to the NixOS + Home Manager configuration
 
@@ -93,7 +93,7 @@ sudo netbird up
 | Command | What it does |
 | --- | --- |
 | `~/.dotfiles/Scripts/update.sh` | Update flake inputs, rebuild NixOS + Home Manager, optionally pull latest container images |
-| `~/.dotfiles/Scripts/clean.sh` | Garbage-collect old Nix generations and prune Podman |
+| `~/.dotfiles/Scripts/clean.sh` | Garbage-collect old Nix generations and prune Docker |
 
 ### Edit secrets
 
@@ -134,8 +134,8 @@ sops -d Nixos/secrets.yaml
 │       ├── modules.nix                 # Module imports
 │       ├── hardware-configuration.nix  # Machine-specific (generated)
 │       ├── samba.nix                   # Samba file sharing
-│       ├── podman.nix                  # Podman + container orchestration
-│       └── Podman-Compose/
+│       ├── docker.nix                  # Docker + container orchestration
+│       └── Docker-Compose/
 │           ├── traefik.nix             # Reverse proxy
 │           ├── pi-hole.nix             # DNS ad-blocking
 │           ├── homepage.nix            # Dashboard

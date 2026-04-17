@@ -18,8 +18,8 @@ in {
   home.packages = with pkgs; [
     fastfetch
     btop
-    podman-compose
-    podman-tui
+    docker-compose
+    lazydocker
   ];
 
   home.file = {

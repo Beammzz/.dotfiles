@@ -2,7 +2,7 @@
   imports = [
     ./hardware-configuration.nix
     ./samba.nix
-    ./podman.nix
+    ./docker.nix
     ../secrets.nix
   ];
 }
