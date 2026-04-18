@@ -97,7 +97,12 @@ sudo netbird up
 
 ### Edit secrets
 
-The age key lives at `~/.config/sops/age/keys.txt` (the default `sops` lookup path), so no extra flags are needed:
+The age key lives at `/var/lib/sops-nix/key.txt` (the default `sops-nix` location, owned by root). `sops` CLI will find it automatically via `SOPS_AGE_KEY_FILE` — set that env var if you need to edit secrets as a non-root user:
+
+```bash
+export SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt   # may require sudo to read
+```
+
 
 ```bash
 # Open encrypted secrets in your editor (re-encrypts on save)
@@ -193,7 +198,9 @@ Secrets are encrypted with [sops-nix](https://github.com/Mic92/sops-nix) using a
 **Rotate the age key:**
 
 ```bash
-age-keygen -o ~/.config/sops/age/keys.txt
+sudo mkdir -p /var/lib/sops-nix
+age-keygen | sudo tee /var/lib/sops-nix/key.txt > /dev/null
+sudo chmod 600 /var/lib/sops-nix/key.txt
 # Update .sops.yaml with the new public key
 sops updatekeys Nixos/secrets.yaml
 ```

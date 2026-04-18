@@ -2,8 +2,8 @@
 set -uo pipefail
 
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
-SOPS_KEY_DIR="$HOME/.config/sops/age"
-SOPS_KEY_FILE="$SOPS_KEY_DIR/keys.txt"
+SOPS_KEY_DIR="/var/lib/sops-nix"
+SOPS_KEY_FILE="$SOPS_KEY_DIR/key.txt"
 SOPS_CONFIG="$DOTFILES_DIR/.sops.yaml"
 SECRETS_EXAMPLE="$DOTFILES_DIR/Nixos/secrets.yaml.example"
 SECRETS_FILE="$DOTFILES_DIR/Nixos/secrets.yaml"
@@ -65,15 +65,17 @@ if [[ -f "$SOPS_KEY_FILE" ]]; then
     fi
 else
     info "Generating age key for sops-nix..."
-    mkdir -p "$SOPS_KEY_DIR"
-    # Generate key, capture output to extract public key
-    AGE_OUTPUT=$(age-keygen -o "$SOPS_KEY_FILE" 2>&1)
-    chmod 600 "$SOPS_KEY_FILE"
+    sudo mkdir -p "$SOPS_KEY_DIR"
+    # Generate to a temp file then move into place with root ownership
+    TMP_KEY=$(mktemp)
+    AGE_OUTPUT=$(age-keygen -o "$TMP_KEY" 2>&1)
+    sudo install -m 0600 -o root -g root "$TMP_KEY" "$SOPS_KEY_FILE"
+    rm -f "$TMP_KEY"
     ok "Age key created at $SOPS_KEY_FILE"
 
     AGE_PUBLIC_KEY=$(echo "$AGE_OUTPUT" | grep -o 'age1[a-z0-9]*' | head -1)
     if [[ -z "$AGE_PUBLIC_KEY" ]]; then
-        AGE_PUBLIC_KEY=$(age-keygen -y "$SOPS_KEY_FILE" 2>/dev/null)
+        AGE_PUBLIC_KEY=$(sudo age-keygen -y "$SOPS_KEY_FILE" 2>/dev/null)
     fi
 fi
 

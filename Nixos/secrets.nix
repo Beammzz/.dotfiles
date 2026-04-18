@@ -1,7 +1,7 @@
 { config, ... }: {
   sops = {
     defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "/home/harumi/.config/sops/age/keys.txt";
+    age.keyFile = "/var/lib/sops-nix/key.txt";
     validateSopsFiles = false;
 
     secrets = {
