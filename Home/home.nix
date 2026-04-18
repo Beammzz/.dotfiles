@@ -18,7 +18,7 @@ in {
   home.packages = with pkgs; [
     fastfetch
     btop
-    docker-compose
+    podman-compose
     lazydocker
   ];
 

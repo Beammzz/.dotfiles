@@ -68,16 +68,16 @@ if [[ "$answer" == "y" ]]; then
     commit_if_changes "chore: post-build sync"
 
     echo ""
-    echo -e "${YELLOW}${BOLD}? Update Docker containers to latest images? (y/n)${NC}"
-    read -r docker_answer
-    if [[ "$docker_answer" == "y" ]]; then
-        echo -e "${BLUE}▶ Pulling latest Docker images and restarting services...${NC}"
-        sudo docker ps --format "{{.Image}}" | sort -u | xargs -r -I {} sudo docker pull {}
-        echo -e "${BLUE}▶ Restarting Docker infrastructure...${NC}"
-        sudo systemctl restart docker.service docker-create-proxy-network.service
-        echo -e "${GREEN}✓ Docker containers updated and restarted via systemd dependency tree.${NC}"
+    echo -e "${YELLOW}${BOLD}? Update Podman containers to latest images? (y/n)${NC}"
+    read -r podman_answer
+    if [[ "$podman_answer" == "y" ]]; then
+        echo -e "${BLUE}▶ Pulling latest Podman images and restarting services...${NC}"
+        sudo podman ps --format "{{.Image}}" | sort -u | xargs -r -I {} sudo podman pull {}
+        echo -e "${BLUE}▶ Restarting Podman infrastructure...${NC}"
+        sudo systemctl restart podman.service podman-create-proxy-network.service
+        echo -e "${GREEN}✓ Podman containers updated and restarted via systemd dependency tree.${NC}"
     else
-        echo -e "${YELLOW}⊘ Skipped Docker update.${NC}"
+        echo -e "${YELLOW}⊘ Skipped Podman update.${NC}"
     fi
 
     echo ""

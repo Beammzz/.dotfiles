@@ -23,7 +23,7 @@
         "${toString ../../../Homepage/config}:/app/config"
         "${toString ../../../Homepage/images}:/app/public/images"
         "${MediaPath}:/mnt/media:ro"
-        "/var/run/docker.sock:/var/run/docker.sock:ro"
+        "/run/podman/podman.sock:/var/run/docker.sock:ro"
     ];
 
     labels = {
@@ -36,9 +36,10 @@
     };
   };
 
-  systemd.services.docker-homepage = {
-    after = [ "docker.service" "docker-create-proxy-network.service" "docker-traefik.service" ];
-    requires = [ "docker.service" "docker-create-proxy-network.service" ];
+  systemd.services.podman-homepage = {
+    after = [ "podman.service" "podman-create-proxy-network.service" "podman-traefik.service" "sops-install-secrets.service" ];
+    requires = [ "podman.service" "podman-create-proxy-network.service" ];
+    wants = [ "sops-install-secrets.service" ];
   };
 
   systemd.tmpfiles.rules = [

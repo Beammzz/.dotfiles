@@ -226,51 +226,51 @@
     "d ${ContainerPath}/suwayomi 0755 ${toString PUID} ${toString PGID} -"
   ];
 
-  systemd.services.docker-qbittorrent = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" "docker-gluetun.service" ];
-    wants = [ "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" "docker-gluetun.service" ];
-    bindsTo = [ "docker-gluetun.service" ];
+  systemd.services.podman-qbittorrent = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" "podman-gluetun.service" ];
+    wants = [ "podman-traefik.service" ];
+    requires = [ "podman-create-proxy-network.service" "podman-gluetun.service" ];
+    bindsTo = [ "podman-gluetun.service" ];
   };
 
-  systemd.services.docker-gluetun = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" ];
-    wants = [ "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" ];
+  systemd.services.podman-gluetun = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" "sops-install-secrets.service" ];
+    wants = [ "podman-traefik.service" "sops-install-secrets.service" ];
+    requires = [ "podman-create-proxy-network.service" ];
   };
 
-  systemd.services.docker-sonarr = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" "docker-gluetun.service" ];
-    wants = [ "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" "docker-gluetun.service" ];
-    bindsTo = [ "docker-gluetun.service" ];
+  systemd.services.podman-sonarr = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" "podman-gluetun.service" ];
+    wants = [ "podman-traefik.service" ];
+    requires = [ "podman-create-proxy-network.service" "podman-gluetun.service" ];
+    bindsTo = [ "podman-gluetun.service" ];
   };
 
-  systemd.services.docker-radarr = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" "docker-gluetun.service" ];
-    wants = [ "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" "docker-gluetun.service" ];
-    bindsTo = [ "docker-gluetun.service" ];
+  systemd.services.podman-radarr = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" "podman-gluetun.service" ];
+    wants = [ "podman-traefik.service" ];
+    requires = [ "podman-create-proxy-network.service" "podman-gluetun.service" ];
+    bindsTo = [ "podman-gluetun.service" ];
   };
 
-  systemd.services.docker-prowlarr = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" "docker-gluetun.service" ];
-    wants = [ "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" "docker-gluetun.service" ];
-    bindsTo = [ "docker-gluetun.service" ];
+  systemd.services.podman-prowlarr = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" "podman-gluetun.service" ];
+    wants = [ "podman-traefik.service" ];
+    requires = [ "podman-create-proxy-network.service" "podman-gluetun.service" ];
+    bindsTo = [ "podman-gluetun.service" ];
   };
 
-  systemd.services.docker-suwayomi = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" "docker-gluetun.service" ];
-    wants = [ "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" "docker-gluetun.service" ];
-    bindsTo = [ "docker-gluetun.service" ];
+  systemd.services.podman-suwayomi = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" "podman-gluetun.service" "sops-install-secrets.service" ];
+    wants = [ "podman-traefik.service" "sops-install-secrets.service" ];
+    requires = [ "podman-create-proxy-network.service" "podman-gluetun.service" ];
+    bindsTo = [ "podman-gluetun.service" ];
   };
 
-  systemd.services.docker-flaresolverr = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" "docker-gluetun.service" ];
-    wants = [ "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" "docker-gluetun.service" ];
-    bindsTo = [ "docker-gluetun.service" ];
+  systemd.services.podman-flaresolverr = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" "podman-gluetun.service" ];
+    wants = [ "podman-traefik.service" ];
+    requires = [ "podman-create-proxy-network.service" "podman-gluetun.service" ];
+    bindsTo = [ "podman-gluetun.service" ];
   };
 }

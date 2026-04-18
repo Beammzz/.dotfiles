@@ -56,14 +56,16 @@
     dependsOn = [ "nextcloud-redis" ];
   };
 
-  systemd.services.docker-nextcloud-redis = {
-    after = [ "docker-create-proxy-network.service" ];
-    requires = [ "docker-create-proxy-network.service" ];
+  systemd.services.podman-nextcloud-redis = {
+    after = [ "podman-create-proxy-network.service" "sops-install-secrets.service" ];
+    requires = [ "podman-create-proxy-network.service" ];
+    wants = [ "sops-install-secrets.service" ];
   };
 
-  systemd.services.docker-nextcloud = {
-    after = [ "docker-create-proxy-network.service" "docker-nextcloud-redis.service" ];
-    requires = [ "docker-create-proxy-network.service" "docker-nextcloud-redis.service" ];
+  systemd.services.podman-nextcloud = {
+    after = [ "podman-create-proxy-network.service" "podman-nextcloud-redis.service" "sops-install-secrets.service" ];
+    requires = [ "podman-create-proxy-network.service" "podman-nextcloud-redis.service" ];
+    wants = [ "sops-install-secrets.service" ];
   };
 
   systemd.tmpfiles.rules = [

@@ -26,7 +26,7 @@
     environmentFiles = [ traefikEnvFile ];
 
     volumes = [
-      "/var/run/docker.sock:/var/run/docker.sock:ro"
+      "/run/podman/podman.sock:/var/run/docker.sock:ro"
       "${ContainerPath}/traefik/acme.json:/acme.json"
     ];
 
@@ -71,7 +71,7 @@
       "--entrypoints.websecure.http.tls.domains[0].main=${Domain}"
       "--entrypoints.websecure.http.tls.domains[0].sans=*.${Domain}"
 
-      # Docker provider
+      # Docker provider (Podman socket exposed at /var/run/docker.sock inside container)
       "--providers.docker=true"
       "--providers.docker.endpoint=unix:///var/run/docker.sock"
       "--providers.docker.exposedbydefault=false"
@@ -86,9 +86,10 @@
     ];
   };
 
-  systemd.services.docker-traefik = {
-    after = [ "docker.service" "docker.socket" "docker-create-proxy-network.service" ];
-    requires = [ "docker.service" "docker.socket" "docker-create-proxy-network.service" ];
+  systemd.services.podman-traefik = {
+    after = [ "podman.service" "podman.socket" "podman-create-proxy-network.service" "sops-install-secrets.service" ];
+    requires = [ "podman.service" "podman.socket" "podman-create-proxy-network.service" ];
+    wants = [ "sops-install-secrets.service" ];
   };
 
   systemd.tmpfiles.rules = [

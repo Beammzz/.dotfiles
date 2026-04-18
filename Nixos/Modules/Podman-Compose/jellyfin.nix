@@ -27,9 +27,9 @@
     ];
   };
 
-  systemd.services.docker-jellyfin = {
-    after = [ "docker-create-proxy-network.service" "docker-traefik.service" ];
-    requires = [ "docker-create-proxy-network.service" ];
+  systemd.services.podman-jellyfin = {
+    after = [ "podman-create-proxy-network.service" "podman-traefik.service" ];
+    requires = [ "podman-create-proxy-network.service" ];
   };
 
   systemd.tmpfiles.rules = [

@@ -24,14 +24,14 @@ echo -e "${BLUE}▶ Cleaning up old NixOS generations...${NC}"
 sudo nix-collect-garbage -d
 
 echo ""
-echo -e "${YELLOW}${BOLD}? Prune Docker system (remove unused containers, networks, images)? (y/n)${NC}"
-read -r docker_answer
-if [[ "$docker_answer" == "y" ]]; then
-    echo -e "${BLUE}▶ Pruning Docker system...${NC}"
-    sudo docker system prune -a -f
-    echo -e "${GREEN}✓ Docker system pruned.${NC}"
+echo -e "${YELLOW}${BOLD}? Prune Podman system (remove unused containers, networks, images)? (y/n)${NC}"
+read -r podman_answer
+if [[ "$podman_answer" == "y" ]]; then
+    echo -e "${BLUE}▶ Pruning Podman system...${NC}"
+    sudo podman system prune -a -f
+    echo -e "${GREEN}✓ Podman system pruned.${NC}"
 else
-    echo -e "${YELLOW}⊘ Skipped Docker pruning.${NC}"
+    echo -e "${YELLOW}⊘ Skipped Podman pruning.${NC}"
 fi
 
 echo -e "${GREEN}✓ Cleanup complete!${NC}"
